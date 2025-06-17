@@ -29,5 +29,5 @@ public class ProductRequest {
     private Integer stock;
 
     @Positive
-    private String category;
+    private Long categoryId;
 }
