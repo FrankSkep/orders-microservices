@@ -1,6 +1,6 @@
 package com.productsservice.service;
 
-import com.productsservice.entity.Product;
+import com.productsservice.dto.ProductResponse;
 import com.productsservice.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductResponse> getAllProducts() {
+        return productRepository.findAllProjected();
     }
 }

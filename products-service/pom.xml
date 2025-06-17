@@ -19,7 +19,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>
-        com.products-service
+        com.productsservice
     </groupId>
     <artifactId>
         products-service
