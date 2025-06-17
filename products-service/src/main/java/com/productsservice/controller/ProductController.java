@@ -4,10 +4,7 @@ import com.productsservice.dto.ProductResponse;
 import com.productsservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,15 +17,16 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getProducts(@RequestHeader("X-Username") String username,
-                                                     @RequestHeader("X-Role") String role,
-                                                     @RequestHeader("X-User-Id") String userId) {
+                                                             @RequestHeader("X-Role") String role,
+                                                             @RequestHeader("X-User-Id") String userId) {
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponse> getProductById(@RequestHeader("X-Username") String username,
-                                                     @RequestHeader("X-Role") String role,
-                                                     @RequestHeader("X-User-Id") String userId) {
-        return ResponseEntity.ok(new ProductResponse()); // Placeholder response
+                                                          @RequestHeader("X-Role") String role,
+                                                          @RequestHeader("X-User-Id") String userId,
+                                                          @PathVariable Long id) {
+        return ResponseEntity.ok(productService.getProductById(id)); // Placeholder response
     }
 }
