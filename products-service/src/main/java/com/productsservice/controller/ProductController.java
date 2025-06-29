@@ -30,6 +30,18 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProductDetails(id));
     }
 
+    @GetMapping("/stock/{id}")
+    public Integer getProductCount(@PathVariable Long id) {
+        return productService.getProductStock(id);
+    }
+
+    @PatchMapping("{id}/stock")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> discountStock(@PathVariable Long id, @RequestBody Integer stock) {
+        productService.discountStock(id, stock);
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> addProduct(@RequestBody @P("productRequest") ProductRequest productRequest) {

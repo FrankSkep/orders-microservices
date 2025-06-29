@@ -6,8 +6,10 @@ import com.productsservice.dto.ProductUpdateRequest;
 import com.productsservice.entity.Category;
 import com.productsservice.entity.Product;
 import com.productsservice.exception.ProductNotFoundException;
+import com.productsservice.exception.ProductStockException;
 import com.productsservice.repository.ProductRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -59,5 +61,20 @@ public class ProductService {
     public void deleteProduct(Long id) {
         Product product = getProductById(id);
         productRepository.delete(product);
+    }
+
+    public Integer getProductStock(Long id) {
+        Product product = getProductById(id);
+        return product.getStock();
+    }
+
+    @Transactional
+    public void discountStock(Long id, Integer stock) {
+        Product product = getProductById(id);
+        Integer currentStock = product.getStock();
+        if (currentStock < stock) {
+            throw new ProductStockException("Insufficient stock for product ID: " + id);
+        }
+        product.setStock(currentStock - stock);
     }
 }
