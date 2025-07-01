@@ -46,7 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         var authToken = new UsernamePasswordAuthenticationToken(
                 username,
-                token, // ← aquí pones el JWT como credentials
+                token,
                 List.of(new SimpleGrantedAuthority(role))
         );
 
