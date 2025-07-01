@@ -2,13 +2,13 @@ package com.productsservice.controller;
 
 import com.productsservice.dto.ProductRequest;
 import com.productsservice.dto.ProductResponse;
+import com.productsservice.dto.ProductStockRequest;
 import com.productsservice.dto.ProductUpdateRequest;
 import com.productsservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +20,8 @@ public class ProductController {
 
     private final ProductService productService;
 
+    // Public endpoints (for all users)
+
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
@@ -30,21 +32,37 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProductDetails(id));
     }
 
-    @GetMapping("/stock/{id}")
-    public Integer getProductCount(@PathVariable Long id) {
-        return productService.getProductStock(id);
+    // Internal endpoints (for Feign Client of Order-Service)
+
+    @GetMapping("/internal/{id}")
+    public ResponseEntity<ProductResponse> getProductByIdInternal(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.getProductDetails(id));
     }
 
-    @PatchMapping("{id}/stock")
+    @PostMapping("/internal/stock/validate")
+    public ResponseEntity<Boolean> validateStock(@RequestBody List<ProductStockRequest> request) {
+        boolean valid = productService.validateStock(request);
+        return ResponseEntity.ok(valid);
+    }
+
+    @PostMapping("/internal/stock/decrease")
+    public ResponseEntity<Void> decreaseStockInternal(@RequestBody List<ProductStockRequest> request) {
+        productService.decreaseStock(request);
+        return ResponseEntity.noContent().build();
+    }
+
+    // Administrative endpoints (ADMIN only)
+
+    @PatchMapping("/{id}/stock")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> discountStock(@PathVariable Long id, @RequestBody Integer stock) {
+    public ResponseEntity<Void> decreaseStock(@PathVariable Long id, @RequestBody Integer stock) {
         productService.discountStock(id, stock);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> addProduct(@RequestBody @P("productRequest") ProductRequest productRequest) {
+    public ResponseEntity<Void> addProduct(@RequestBody ProductRequest productRequest) {
         productService.addProduct(productRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

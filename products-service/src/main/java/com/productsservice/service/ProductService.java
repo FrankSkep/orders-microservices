@@ -2,6 +2,7 @@ package com.productsservice.service;
 
 import com.productsservice.dto.ProductRequest;
 import com.productsservice.dto.ProductResponse;
+import com.productsservice.dto.ProductStockRequest;
 import com.productsservice.dto.ProductUpdateRequest;
 import com.productsservice.entity.Category;
 import com.productsservice.entity.Product;
@@ -63,9 +64,30 @@ public class ProductService {
         productRepository.delete(product);
     }
 
-    public Integer getProductStock(Long id) {
-        Product product = getProductById(id);
-        return product.getStock();
+    public boolean validateStock(List<ProductStockRequest> requests) {
+        for (ProductStockRequest req : requests) {
+            var product = productRepository.findById(req.getProductId())
+                    .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + req.getProductId()));
+            if (product.getStock() < req.getQuantity()) {
+                return false; // insufficient stock for this product
+            }
+        }
+        return true; // all products have sufficient stock
+    }
+
+    @Transactional
+    public void decreaseStock(List<ProductStockRequest> requests) {
+        for (ProductStockRequest req : requests) {
+            var product = productRepository.findById(req.getProductId())
+                    .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + req.getProductId()));
+
+            if (product.getStock() < req.getQuantity()) {
+                throw new RuntimeException("Insufficient stock for product ID: " + req.getProductId());
+            }
+
+            product.setStock(product.getStock() - req.getQuantity());
+            productRepository.save(product);
+        }
     }
 
     @Transactional
