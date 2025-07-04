@@ -7,6 +7,7 @@ import com.ordersservice.security.AuthenticatedUserUtil;
 import com.ordersservice.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,10 +28,16 @@ public class OrderController {
         orderService.createOrder(items, userId);
     }
 
-    @GetMapping
+    @GetMapping("/my")
     public ResponseEntity<List<OrderResponse>> getMyOrders() {
         Long userId = authenticatedUserUtil.getCurrentUserId();
         return ResponseEntity.ok(orderService.getOrdersById(userId));
+    }
+
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<OrderResponse>> getAllOrders() {
+        return ResponseEntity.ok(orderService.getAllOrders());
     }
 
     // Internal endpoints (for other services)

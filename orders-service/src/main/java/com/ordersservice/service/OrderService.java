@@ -90,6 +90,11 @@ public class OrderService {
                 .map(this::toEntity).toList();
     }
 
+    public List<OrderResponse> getAllOrders() {
+        return orderRepository.findAll().stream()
+                .map(this::toEntity).toList();
+    }
+
     private OrderResponse toEntity(Order order) {
         OrderResponse response = new OrderResponse();
         response.setId(order.getId());
