@@ -6,14 +6,17 @@ spring:
     gateway:
       routes:
         - id: products
-          uri: lb://products-service
+          uri: lb://product-service
           predicates:
             - Path=/api/products/**
 
         - id: orders
-          uri: lb://orders-service
+          uri: lb://order-service
           predicates:
             - Path=/api/orders/**
+
+        - id: payments
+          uri: lb://payment-service
 eureka:
   client:
     service-url:
