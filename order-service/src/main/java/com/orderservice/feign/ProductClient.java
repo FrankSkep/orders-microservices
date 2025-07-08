@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(name = "products-service", configuration = FeignClientConfig.class)
+@FeignClient(name = "product-service", configuration = FeignClientConfig.class)
 public interface ProductClient {
 
     @GetMapping("/api/products/internal/{id}")
-    ProductDTO getProductById(@PathVariable Long id);
+    ProductDTO getProductById(@PathVariable("id") Long id);
 
     @PostMapping("/api/products/internal/stock/validate")
     boolean validateStock(@RequestBody List<OrderItemRequest> request);

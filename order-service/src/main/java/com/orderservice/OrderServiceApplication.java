@@ -6,9 +6,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableFeignClients(basePackages = "com.orderservice.feign")
-public class OrdersServiceApplication {
+public class OrderServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(OrdersServiceApplication.class, args);
+        SpringApplication.run(OrderServiceApplication.class, args);
     }
 }
