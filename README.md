@@ -12,7 +12,14 @@
 
 ## Description
 
-Modular backend system based on microservices with Java and Spring Boot, designed to manage products, orders, and payments. Uses API Gateway, Eureka Discovery Server, and Config Server, with communication via Feign Clients and security with JWT.
+A **demo project** showcasing a well-designed microservices ecosystem using Java and Spring Boot. This system implements a complete order management workflow with product, order, and payment processing simulation, emphasizing **microservices best practices** and modern Spring Cloud patterns.
+
+**Key Learning Objectives:**
+- Microservices architecture design and implementation
+- Service discovery and centralized configuration
+- Inter-service communication patterns
+- Security implementation across distributed systems
+- API Gateway pattern and request routing
 
 ---
 
@@ -49,13 +56,18 @@ Modular backend system based on microservices with Java and Spring Boot, designe
 
 ## Communication
 
-- **OpenFeign Clients** enable synchronous communication:
-  - **Order Service → Product Service**: Validate and decrease stock.
-  - **Payment Service → Order Service**: Retrieve and update orders.
+This project showcases multiple **microservices communication patterns**:
 
-- **Service Discovery**: Managed via **Eureka Server** for dynamic registration and load balancing.
+- **Synchronous Communication via OpenFeign**:
+  - **Order Service → Product Service**: Stock validation and inventory updates
+  - **Payment Service → Order Service**: Order retrieval and status updates
 
-- **Centralized Configuration**: Hosted in **Config Server**, supporting environment-specific configs.
+- **Service Discovery**: Automatic service registration and discovery via **Eureka Server**
+
+- **Centralized Configuration**: Dynamic configuration management through **Config Server**
+
+- **API Gateway Pattern**: Single entry point with request routing and security enforcement
+
 
 ---
 
@@ -90,7 +102,10 @@ Modular backend system based on microservices with Java and Spring Boot, designe
 
 ## API Documentation
 
-Each microservice exposes its API documentation with **Swagger** at `/swagger-ui.html`.
+Each microservice exposes comprehensive API documentation via **Swagger UI**:
+- Access at: `http://localhost:{port}/swagger-ui.html`
+- Interactive API documentation
+- Complete request/response schemas
 
 ---
 
