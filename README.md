@@ -5,21 +5,22 @@
 1. [Description](#description)
 2. [Core Technologies](#core-technologies)
 3. [Architecture Overview](#architecture-overview)
-4. [Communication](#communication)
+4. [Inter-Service Communication & Infrastructure](#inter-service-communication--infrastructure)
 5. [Running Locally](#running-locally)
 6. [API Documentation](#api-documentation)
 7. [License](#license)
 
 ## Description
 
-A **demo project** showcasing a well-designed microservices ecosystem using Java and Spring Boot. This system implements a complete order management workflow with product, order, and payment processing simulation, emphasizing **microservices best practices** and modern Spring Cloud patterns.
+A modular backend system built with Java and Spring Boot, designed to manage products, orders, and payments using a clean microservices architecture. It integrates Spring Cloud patterns, centralized configuration, and distributed security to implement a complete order management workflow in a scalable and maintainable way.
 
-**Key Learning Objectives:**
-- Microservices architecture design and implementation
-- Service discovery and centralized configuration
-- Inter-service communication patterns
-- Security implementation across distributed systems
-- API Gateway pattern and request routing
+#### Highlights
+
+* Microservices architecture with Spring Cloud
+* Secure APIs with JWT and role-based authorization
+* Centralized configuration with Config Server
+* Service discovery via Eureka
+* Inter-service communication using OpenFeign
 
 ---
 
@@ -40,6 +41,8 @@ A **demo project** showcasing a well-designed microservices ecosystem using Java
 
 ![Diagram](https://i.ibb.co/xPDtny8/architecture-diagram.png)
 
+> *High-level architecture diagram.*
+
 | Service           | Port  | Database    | Responsibility                      |
 |--------------------|-------|-------------|-------------------------------------|
 | Config Server     | 8888  | -           | Centralized configuration           |
@@ -54,24 +57,27 @@ A **demo project** showcasing a well-designed microservices ecosystem using Java
 
 ---
 
-## Communication
+## Inter-Service Communication & Infrastructure
 
-This project showcases multiple **microservices communication patterns**:
+This system integrates essential microservices patterns:
 
-- **Synchronous Communication via OpenFeign**:
-  - **Order Service → Product Service**: Stock validation and inventory updates
-  - **Payment Service → Order Service**: Order retrieval and status updates
+* **OpenFeign (Synchronous calls)**:
 
-- **Service Discovery**: Automatic service registration and discovery via **Eureka Server**
+  * *Order Service → Product Service*: Stock validation and inventory updates
+  * *Payment Service → Order Service*: Retrieve order details and update statuses
 
-- **Centralized Configuration**: Dynamic configuration management through **Config Server**
+* **Service Discovery**: Managed by **Eureka Server**, enabling dynamic registration and load balancing.
 
-- **API Gateway Pattern**: Single entry point with request routing and security enforcement
+* **Centralized Configuration**: Handled by **Config Server** with environment-specific configurations.
+
+* **API Gateway**: Acts as the single entry point, routing requests to microservices with JWT-based security enforcement.
 
 
 ---
 
 ## Running Locally
+
+Follow these steps to run the system locally:
 
 1. Clone the repository:
    ```bash
@@ -96,7 +102,7 @@ This project showcases multiple **microservices communication patterns**:
    ```
 4. Start the Config Server and Discovery Server.
 5. Start each microservice.
-6. Finally, run the API Gateway.
+6. Finally, start the API Gateway.
 
 ---
 

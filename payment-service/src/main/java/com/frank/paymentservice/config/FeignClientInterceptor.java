@@ -8,7 +8,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Configuration
-public class FeignClientConfig {
+public class FeignClientInterceptor {
 
     @Bean
     public RequestInterceptor requestInterceptor() {
