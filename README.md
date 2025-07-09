@@ -2,13 +2,13 @@
 
 ## Table of Contents
 
-1. [Description](#-description)
-2. [Core Technologies](#️-core-technologies)
-3. [Architecture Overview](#️-architecture-overview)
-4. [Communication](#-communication)
-5. [Running Locally](#-running-locally)
-6. [API Documentation](#-api-documentation)
-7. [License](#-license)
+1. [Description](#description)
+2. [Core Technologies](#core-technologies)
+3. [Architecture Overview](#architecture-overview)
+4. [Communication](#communication)
+5. [Running Locally](#running-locally)
+6. [API Documentation](#api-documentation)
+7. [License](#license)
 
 ## Description
 
