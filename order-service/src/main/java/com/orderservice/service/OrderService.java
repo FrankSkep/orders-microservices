@@ -1,5 +1,6 @@
 package com.orderservice.service;
 
+import com.orderservice.dto.OrderItemDTO;
 import com.orderservice.dto.OrderItemRequest;
 import com.orderservice.dto.OrderResponse;
 import com.orderservice.dto.ProductDTO;
@@ -7,7 +8,7 @@ import com.orderservice.entity.Order;
 import com.orderservice.entity.OrderItem;
 import com.orderservice.entity.OrderStatus;
 import com.orderservice.exception.OrderNotFoundException;
-import com.orderservice.feign.ProductClient;
+import com.orderservice.client.ProductClient;
 import com.orderservice.repository.OrderRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -96,13 +97,17 @@ public class OrderService {
     }
 
     private OrderResponse toEntity(Order order) {
+        List<OrderItemDTO> items = order.getItems().stream()
+                .map(item -> new OrderItemDTO(item.getId(), item.getProductId(), item.getQuantity(), item.getUnitPrice()))
+                .toList();
+
         OrderResponse response = new OrderResponse();
         response.setId(order.getId());
         response.setUserId(order.getUserId());
         response.setStatus(order.getStatus());
         response.setTotalAmount(order.getTotalAmount());
         response.setCreatedAt(order.getCreatedAt());
-//        response.setItems(order.getItems());
+        response.setItems(items);
         return response;
     }
 }

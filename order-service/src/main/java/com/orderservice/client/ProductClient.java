@@ -1,4 +1,4 @@
-package com.orderservice.feign;
+package com.orderservice.client;
 
 import com.orderservice.config.FeignClientConfig;
 import com.orderservice.dto.OrderItemRequest;
