@@ -63,8 +63,8 @@ Modular backend system based on microservices with Java and Spring Boot, designe
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/FrankSkep/order-management-system.git
-   cd order-management-system
+   git clone https://github.com/FrankSkep/orders-microservices.git
+   cd orders-microservices
    ```
 2. Set the required environment variables:
 
