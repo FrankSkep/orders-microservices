@@ -1,72 +1,99 @@
-# 📝 Orders Management System - Microservices
+# Order Management System
 
-## 📌 Description
+## Table of Contents
 
-Modular backend system based on **microservices with Java and Spring Boot**, designed to manage products, orders, and payments. Uses **API Gateway, Eureka Discovery Server, and Config Server**, with communication via **Feign Clients** and security with **JWT**.
+1. [Description](#-description)
+2. [Core Technologies](#️-core-technologies)
+3. [Architecture Overview](#️-architecture-overview)
+4. [Communication](#-communication)
+5. [Running Locally](#-running-locally)
+6. [API Documentation](#-api-documentation)
+7. [License](#-license)
 
----
+## Description
 
-## ⚙️ Technologies
-
-* Java 21
-* Spring Boot 3
-* Spring Cloud (Eureka, Config, Gateway, OpenFeign)
-* Spring Security JWT
-* PostgreSQL
-* Maven
-
----
-
-## 🏗️ Architecture
-
-![Diagram](https://i.ibb.co/Gv529Xcv/architecture.png)
-
-* **API Gateway**: Single entry point with JWT validation.
-* **Config Server**: Centralized configuration.
-* **Eureka Server**: Service discovery.
-* **Auth Service**: User registration and login (JWT issuance).
-* **Product Service**: Product and category management.
-* **Order Service**: Order creation and management.
-* **Payment Service**: Payment processing and order updates.
+Modular backend system based on microservices with Java and Spring Boot, designed to manage products, orders, and payments. Uses API Gateway, Eureka Discovery Server, and Config Server, with communication via Feign Clients and security with JWT.
 
 ---
 
-## 🔐 Security
+## Core Technologies
 
-* JWT is validated by the API Gateway.
-* Each microservice implements its own **JwtService** and **JwtAuthenticationFilter** to set up the security context and protect endpoints using Spring Security.
-
----
-
-## 🔄 Communication
-
-* **Feign Clients** for inter-service calls:
-
-  * `Order-Service` → `Product-Service`: Validate and decrease stock.
-  * `Payment-Service` → `Order-Service`: Retrieve and update orders.
+- **Java 21**, **Spring Boot 3.2.8**
+- **Spring Cloud 2023.0.1** (Eureka, Config Server, Gateway)
+- **Spring Security + JWT (io.jsonwebtoken 0.11.5)**
+- **Spring Data JPA + PostgreSQL**
+- **OpenFeign**
+- **SpringDoc OpenAPI (Swagger)**
+- **Lombok**
+- **Maven**
 
 ---
 
-## 🚀 Running locally
+## Architecture Overview
+
+![Diagram](https://i.ibb.co/xPDtny8/architecture-diagram.png)
+
+| Service           | Port  | Database    | Responsibility                      |
+|--------------------|-------|-------------|-------------------------------------|
+| Config Server     | 8888  | -           | Centralized configuration           |
+| Discovery Server  | 8761  | -           | Service registry and discovery      |
+| API Gateway       | 8080  | -           | Single entry point with JWT validation |
+| Auth Service      | 8081  | auth_db     | User registration, authentication, JWT issuance |
+| Product Service   | 8082  | product_db  | Product catalog and inventory       |
+| Order Service     | 8083  | order_db    | Order creation and management       |
+| Payment Service   | 8084  | payment_db  | Payment processing and order updates |
+
+> **Security**: All endpoints are secured with JWT-based authentication and role-based authorization (`USER`, `ADMIN`).
+
+---
+
+## Communication
+
+- **OpenFeign Clients** enable synchronous communication:
+  - **Order Service → Product Service**: Validate and decrease stock.
+  - **Payment Service → Order Service**: Retrieve and update orders.
+
+- **Service Discovery**: Managed via **Eureka Server** for dynamic registration and load balancing.
+
+- **Centralized Configuration**: Hosted in **Config Server**, supporting environment-specific configs.
+
+---
+
+## Running Locally
 
 1. Clone the repository:
-
    ```bash
    git clone https://github.com/FrankSkep/order-management-system.git
    cd order-management-system
    ```
-2. Start Config Server and Discovery Server.
-3. Start each microservice.
-4. Finally, run the API Gateway.
+2. Set the required environment variables:
+
+   - JWT_SECRET_KEY
+   - DB_USERNAME
+   - DB_PASSWORD
+   - PRODUCT_DB_URL
+   - ORDER_DB_URL
+   - PAYMENT_DB_URL
+
+3. Create the required databases:
+   ```sql
+   CREATE DATABASE auth_db;
+   CREATE DATABASE product_db;
+   CREATE DATABASE order_db;
+   CREATE DATABASE payment_db;
+   ```
+4. Start the Config Server and Discovery Server.
+5. Start each microservice.
+6. Finally, run the API Gateway.
 
 ---
 
-## 📄 API Documentation
+## API Documentation
 
 Each microservice exposes its API documentation with **Swagger** at `/swagger-ui.html`.
 
 ---
 
-## 📝 License
+## License
 
-This project is licensed under the MIT License. See [LICENSE](./LICENSE) for details.
+This project is licensed under the **MIT License**. See [LICENSE](./LICENSE) for details.

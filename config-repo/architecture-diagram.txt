@@ -1,0 +1,136 @@
+@startuml
+!theme aws-orange
+!define ICONURL https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master
+
+' Configuración de estilos
+skinparam {
+  backgroundColor #F8F9FA
+  shadowing false
+  roundCorner 10
+  linetype ortho
+  defaultFontName Arial
+  defaultFontSize 10
+  ArrowColor #2C3E50
+  ArrowThickness 2
+  minClassWidth 120
+  PackagePadding 20
+}
+
+' Estilos para diferentes tipos de componentes
+skinparam rectangle {
+  BackgroundColor<<Infra>> #E3F2FD
+  BorderColor<<Infra>> #1976D2
+  BorderThickness<<Infra>> 2
+  FontColor<<Infra>> #0D47A1
+
+  BackgroundColor<<Service>> #E8F5E8
+  BorderColor<<Service>> #388E3C
+  BorderThickness<<Service>> 2
+  FontColor<<Service>> #1B5E20
+
+  BackgroundColor<<Gateway>> #FFF3E0
+  BorderColor<<Gateway>> #F57C00
+  BorderThickness<<Gateway>> 2
+  FontColor<<Gateway>> #E65100
+
+  BackgroundColor<<Discovery>> #FCE4EC
+  BorderColor<<Discovery>> #C2185B
+  BorderThickness<<Discovery>> 2
+  FontColor<<Discovery>> #880E4F
+
+  BackgroundColor<<Database>> #F3E5F5
+  BorderColor<<Database>> #7B1FA2
+  BorderThickness<<Database>> 2
+  FontColor<<Database>> #4A148C
+}
+
+' Configuración de actor
+skinparam actor {
+  BackgroundColor #34495E
+  BorderColor #2C3E50
+  FontColor #FFFFFF
+}
+
+' Título del diagrama
+title <size:16><b>Order Management System - Microservices Architecture</b></size>
+
+' Definición de componentes
+actor "👤 Usuario" as user #34495E
+
+' Capa de Gateway
+package "🌐 Gateway Layer" #FFF8E1 {
+  rectangle "🚪 **API Gateway**\n//Spring Cloud Gateway//\n📍 Puerto: 8080" <<Gateway>> as gateway
+}
+
+' Capa de Infraestructura
+package "⚙️ Infrastructure Layer" #E8F5E8 {
+  rectangle "🔧 **Config Server**\n//Spring Cloud Config//\n📍 Puerto: 8888" <<Infra>> as config
+  rectangle "🔍 **Discovery Server**\n//Eureka Server//\n📍 Puerto: 8761" <<Discovery>> as discovery
+}
+
+' Capa de Servicios
+package "🏪 Business Services" #F3E5F5 {
+  rectangle "🔐 **Auth Service**\n📍 Puerto: 8081" <<Service>> as auth
+  rectangle "📦 **Product Service**\n📍 Puerto: 8082" <<Service>> as product
+  rectangle "📋 **Order Service**\n📍 Puerto: 8083" <<Service>> as order
+  rectangle "💳 **Payment Service**\n📍 Puerto: 8084" <<Service>> as payment
+}
+
+' Capa de Base de Datos
+package "🗄️ Database Layer" #FFF3E0 {
+  rectangle "🐘 **auth_db**\n//PostgreSQL//" <<Database>> as auth_db
+  rectangle "🐘 **product_db**\n//PostgreSQL//" <<Database>> as product_db
+  rectangle "🐘 **order_db**\n//PostgreSQL//" <<Database>> as order_db
+  rectangle "🐘 **payment_db**\n//PostgreSQL//" <<Database>> as payment_db
+}
+
+' Conexiones principales del usuario
+user -down-> gateway : <color:#E74C3C><b>HTTPS</b></color>
+
+' Conexiones del Gateway a servicios
+gateway -down-> auth : <color:#2ECC71>Auth</color>
+gateway -down-> product : <color:#3498DB>Product</color>
+gateway -down-> order : <color:#9B59B6>Order</color>
+gateway -down-> payment : <color:#E67E22>Payment</color>
+
+' Conexiones de configuración
+auth -up-> config : <color:#95A5A6>Config</color>
+product -up-> config : <color:#95A5A6>Config</color>
+order -up-> config : <color:#95A5A6>Config</color>
+payment -up-> config : <color:#95A5A6>Config</color>
+gateway -up-> config : <color:#95A5A6>Config</color>
+
+' Conexiones de registro de servicios
+auth -up-> discovery : <color:#E91E63>Register</color>
+product -up-> discovery : <color:#E91E63>Register</color>
+order -up-> discovery : <color:#E91E63>Register</color>
+payment -up-> discovery : <color:#E91E63>Register</color>
+gateway -up-> discovery : <color:#E91E63>Register</color>
+
+' Comunicación entre servicios
+order -right-> product : <color:#FF5722>Feign Client</color>
+payment -left-> order : <color:#FF5722>Feign Client</color>
+
+' Conexiones a base de datos
+auth -down-> auth_db : <color:#673AB7>DB</color>
+product -down-> product_db : <color:#673AB7>DB</color>
+order -down-> order_db : <color:#673AB7>DB</color>
+payment -down-> payment_db : <color:#673AB7>DB</color>
+
+' Notas explicativas
+note right of gateway : <color:#F39C12><b>Security Layer</b></color>\n• JWT validation\n• Request routing\n• Rate limiting
+
+note left of discovery : <color:#E91E63><b>Service Discovery</b></color>\n• Health checks\n• Load balancing\n• Service routing
+
+note bottom of config : <color:#3498DB><b>Configuration</b></color>\n• Environment configs\n• Runtime refresh\n• Encrypted secrets
+
+' Leyenda
+legend bottom
+  <color:#2C3E50><b>Architecture Components</b></color>
+  |<color:#F57C00>Gateway</color>| API Gateway & Load Balancer |
+  |<color:#1976D2>Infrastructure</color>| Config & Discovery Services |
+  |<color:#388E3C>Business Logic</color>| Core Business Services |
+  |<color:#7B1FA2>Data Layer</color>| PostgreSQL Databases |
+endlegend
+
+@enduml
