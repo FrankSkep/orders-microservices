@@ -59,21 +59,21 @@ actor "👤 Usuario" as user #34495E
 
 ' Capa de Gateway
 package "🌐 Gateway Layer" #FFF8E1 {
-  rectangle "🚪 **API Gateway**\n//Spring Cloud Gateway//\n📍 Puerto: 8080" <<Gateway>> as gateway
+  rectangle "🚪 **API Gateway**\n//Spring Cloud Gateway//\n📍 Port: 8080" <<Gateway>> as gateway
 }
 
 ' Capa de Infraestructura
 package "⚙️ Infrastructure Layer" #E8F5E8 {
-  rectangle "🔧 **Config Server**\n//Spring Cloud Config//\n📍 Puerto: 8888" <<Infra>> as config
-  rectangle "🔍 **Discovery Server**\n//Eureka Server//\n📍 Puerto: 8761" <<Discovery>> as discovery
+  rectangle "🔧 **Config Server**\n//Spring Cloud Config//\n📍 Port: 8888" <<Infra>> as config
+  rectangle "🔍 **Discovery Server**\n//Eureka Server//\n📍 Port: 8761" <<Discovery>> as discovery
 }
 
 ' Capa de Servicios
 package "🏪 Business Services" #F3E5F5 {
-  rectangle "🔐 **Auth Service**\n📍 Puerto: 8081" <<Service>> as auth
-  rectangle "📦 **Product Service**\n📍 Puerto: 8082" <<Service>> as product
-  rectangle "📋 **Order Service**\n📍 Puerto: 8083" <<Service>> as order
-  rectangle "💳 **Payment Service**\n📍 Puerto: 8084" <<Service>> as payment
+  rectangle "🔐 **Auth Service**\n📍 Port: 8081" <<Service>> as auth
+  rectangle "📦 **Product Service**\n📍 Port: 8082" <<Service>> as product
+  rectangle "📋 **Order Service**\n📍 Port: 8083" <<Service>> as order
+  rectangle "💳 **Payment Service**\n📍 Port: 8084" <<Service>> as payment
 }
 
 ' Capa de Base de Datos

@@ -39,7 +39,7 @@ A modular backend system built with Java and Spring Boot, designed to manage pro
 
 ## Architecture Overview
 
-![Diagram](https://i.ibb.co/xPDtny8/architecture-diagram.png)
+![Diagram](https://i.ibb.co/s9bS3H9M/high-level-architecture-diagram.png)
 
 > *High-level architecture diagram.*
 
